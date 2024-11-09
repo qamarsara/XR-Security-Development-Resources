@@ -1,0 +1,46 @@
+uPort SDK Documentation
+The provided sources offer information on the uPort SDK for both Android and iOS platforms. Note that the Android SDK project is no longer maintained.
+uPort for Android
+While no specific documentation is available in the provided sources, the uPort Android SDK was a collection of tools and helper libraries written in Kotlin. This SDK allowed developers to issue and use identities on the uPort platform. However, the project has been archived and is no longer maintained. Users with specific use cases requiring this SDK are advised to contact Veramo.
+uPort for iOS
+The uPort iOS SDK enables developers to integrate uPort functionality into their iOS applications. This section outlines the installation and usage of the SDK based on the provided source.
+Installation
+1.	Install Carthage: 
+o	Use Homebrew: brew install carthage
+o	Alternatively, download and install the latest Carthage.pkg.
+2.	Obtain the uPort SDK: 
+o	Navigate to your iOS project's root directory and run: 
+o	carthage update --platform iOS --no-use-binaries --cache-builds
+or execute the provided build script: 
+./build
+This will download and build the uPort SDK frameworks.
+Integrating uPort SDK into your iOS Project
+1.	Copy the Cartfile: Copy the Cartfile from the uPort iOS demo app to your project's root directory and add it to your git repository. Consider copying the build script as well.
+2.	Fetch the uPort SDK: Run the command:
+3.	carthage update --platform iOS --no-use-binaries --cache-builds
+This generates a Cartfile.resolved file, which should also be added to your git repository.
+4.	Exclude Carthage Output from Git: Add the following lines to your .gitignore file to prevent the uPort source code and binaries from being included in your repository:
+5.	Carthage/Checkouts
+6.	Carthage/Build
+7.	Integrate Frameworks into Xcode: Drag all .framework files from Carthage/Build/iOS/ into your Xcode target's "Build Phases > Link Binary With Libraries" section. These frameworks include:
+o	BigInt.framework
+o	CoreEth.framework
+o	CryptoSwift.framework
+o	openssl.framework
+o	SipHash.framework
+o	Sodium.framework
+o	UPTEthereumSigner.framework
+o	Uport.framework
+o	Valet.framework
+8.	Add Carthage Copy-Frameworks Script: Create a "New Run Script Phase" in your application target's "Build Phases" with the content:
+9.	/usr/local/bin/carthage copy-frameworks
+Add the paths to the uPort frameworks under "Input Files" and specify the "Output Files". Refer to source for detailed path listings.
+10.	Import the uPort SDK:
+o	Swift: import UPort
+o	Objective-C: #import UPort;
+Additional Notes
+•	Using carthage copy-frameworks ensures compatibility with App Store submission by removing x86/Simulator architectures from the binaries.
+•	The provided "Copy-Frameworks" script is one approach; alternatives are available in the Carthage documentation.
+•	Ensure the script and input/output file paths are correctly configured to avoid runtime errors.
+For further information, refer to the Carthage documentation. Remember that this documentation is based on the provided sources and may not be exhaustive. Always refer to the official documentation and resources for the most up-to-date information.
+
