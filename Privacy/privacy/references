@@ -1,0 +1,170 @@
+OpenCV SDK Documentation
+Introduction
+OpenCV (Open Source Computer Vision Library) is a BSD-licensed library containing hundreds of computer vision algorithms. It has a modular structure with shared or static libraries, including:
+•	Core Functionality: Defines basic data structures like the Mat multi-dimensional array.
+•	Image Processing: Includes linear and non-linear filtering, geometric transformations, color space conversions, and histograms.
+•	Video: Includes motion estimation, background subtraction, and object tracking.
+•	calib3d: Contains algorithms for single and stereo camera calibration, object pose estimation, and 3D reconstruction.
+•	features2d: Includes salient feature detectors, descriptors, and matchers.
+•	objdetect: For detecting predefined objects like faces, eyes, and cars.
+•	highgui: An interface for simple UI capabilities.
+•	Video I/O: An interface for video capture and codecs.
+•	gpu: GPU-accelerated algorithms.
+•	Helper modules for tasks like Python bindings.
+Key API Concepts
+cv Namespace
+All OpenCV classes and functions are located in the cv namespace. To access them, use the cv:: specifier or the using namespace cv; directive. For instance:
+#include "opencv2/core.hpp"
+...
+cv::Mat H = cv::findHomography(points1, points2, CV_RANSAC, 5);
+...
+or:
+#include "opencv2/core.hpp"
+using namespace cv;
+...
+Mat H = findHomography(points1, points2, CV_RANSAC, 5);
+...
+Use explicit namespace specifiers to avoid potential conflicts with the STL or other libraries.
+Automatic Memory Management
+OpenCV automatically handles memory management. Data structures like std::vector and Mat have destructors that deallocate memory when needed. They utilize a reference counter to track data sharing; a buffer is only deallocated when its reference counter reaches zero. When a Mat instance is copied, the reference counter is incremented instead of copying the data. Use the Mat::clone method for creating full copies of the matrix data.
+For user-defined data types, OpenCV offers the Ptr template class, similar to std::shared_ptr in C++11. It encapsulates a pointer to an instance and a reference counter.
+Automatic Allocation of Output Data
+OpenCV automatically allocates memory for output function parameters in most cases. Output array size and type are determined from the input arrays. Functions may use additional parameters to determine output array properties.
+For example, the code below shows how output arrays are automatically allocated in a simple OpenCV program:
+#include "opencv2/imgproc.hpp"
+#include "opencv2/highgui.hpp"
+using namespace cv;
+int main(int, char**) {
+ VideoCapture cap(0);
+ if (!cap.isOpened()) return -1;
+ Mat frame, edges;
+ namedWindow("edges", 1);
+ for (;;) {
+  cap >> frame;
+  cvtColor(frame, edges, COLOR_BGR2GRAY);
+  GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
+  Canny(edges, edges, 0, 30, 3);
+  imshow("edges", edges);
+  if (waitKey(30) >= 0) break;
+ }
+ return 0;
+}
+The >> operator allocates the frame array, and the cvtColor function automatically allocates the edges array. If the video resolution changes, these arrays are automatically reallocated.
+The Mat::create method is key to this process. It takes the desired array size and type. If the array already matches, the method does nothing. Otherwise, it releases the old data and allocates a new buffer.
+Exceptions to automatic output data allocation include functions like cv::mixChannels and cv::RNG::fill, requiring manual allocation.
+Saturation Arithmetics
+OpenCV often works with image pixels encoded in compact formats, typically 8- or 16-bit per channel. Certain operations may produce values outside the available range, leading to visual artifacts. Saturation arithmetic prevents this by clamping the results to the appropriate range.
+For example, storing the result of an operation (r) in an 8-bit image involves finding the nearest value within 0..255:
+I(x,y) = min(max(round(r), 0), 255)
+This formula can be implemented in C++ using:
+I.at<uchar>(y, x) = saturate_cast<uchar>(r);
+Here, cv::uchar is an 8-bit unsigned integer type in OpenCV. .
+Fixed Pixel Types and Limited Template Use
+While templates offer powerful features, excessive use can increase compilation time and code size. OpenCV favors polymorphism and runtime dispatching over templates to maintain a balance between efficiency and flexibility.
+As a result, OpenCV operates on a limited set of primitive data types for array elements:
+•	8-bit unsigned integer (uchar)
+•	8-bit signed integer (schar)
+•	16-bit unsigned integer (ushort)
+•	16-bit signed integer (short)
+•	32-bit signed integer (int)
+•	32-bit floating-point number (float)
+•	64-bit floating-point number (double)
+•	Tuples of these elements, forming multi-channel arrays.
+The maximum number of channels is defined by the CV_CN_MAX constant (currently 512).
+The following enumeration is used for basic types:
+enum { CV_8U = 0, CV_8S = 1, CV_16U = 2, CV_16S = 3, CV_32S = 4, CV_32F = 5, CV_64F = 6 };
+Multi-channel types are specified using constants like CV_8UC1 to CV_64FC4 (for 1 to 4 channels). For more than 4 channels, use CV_8UC(n) to CV_64FC(n) or the macros CV_MAKETYPE(CV_8U, n) to CV_MAKETYPE(CV_64F, n).
+For example:
+Mat mtx(3, 3, CV_32F); // 3x3 floating-point matrix
+Mat cmtx(10, 1, CV_64FC2); // 10x1 2-channel floating-point matrix
+Mat img(Size(1920, 1080), CV_8UC3); // 3-channel color image
+Mat grayscale(image.size(), CV_MAKETYPE(image.depth(), 1)); // 1-channel image with the same size and channel type as img
+Note that complex array elements are not supported, and individual OpenCV functions may only handle a subset of these array types. For instance, face detection only works with 8-bit grayscale or color images, while linear algebra functions require floating-point arrays.
+InputArray and OutputArray
+Many OpenCV functions process multi-dimensional arrays, typically using cv::Mat parameters. In some cases, using std::vector<> (for point sets) or Matx<> (for matrices) is more convenient.
+To accommodate this, OpenCV uses "proxy" classes:
+•	InputArray: For passing read-only arrays as input.
+•	OutputArray: Derived from InputArray, used for specifying output arrays.
+In most cases, these intermediate types are handled automatically. You can generally use Mat, std::vector<>, Matx<>, Vec<>, or Scalar in their place. When a function has an optional input/output array and you don't need one, pass cv::noArray().
+Error Handling
+OpenCV uses exceptions to signal critical errors. Exceptions are typically instances of the cv::Exception class, derived from std::exception. These can be handled using standard C++ mechanisms.
+Exceptions are often thrown using the CV_Error(errcode, description) macro or its printf-like variant CV_Error_(errcode, printf-spec, (printf-args)). The CV_Assert(condition) macro throws an exception if the condition is not met. For performance-critical code, use CV_DbgAssert(condition), which is only active in Debug mode. Automatic memory management ensures deallocation of intermediate buffers during errors. Use a try statement to catch exceptions:
+try {
+ // call OpenCV functions
+} catch (cv::Exception &e) {
+ const char *err_msg = e.what();
+ std::cout << "exception caught: " << err_msg << std::endl;
+}
+Multi-threading and Re-enterability
+The current OpenCV implementation is re-enterable. This means:
+•	The same function can be called from different threads.
+•	The same constant method can be called from different threads on the same class instance.
+•	The same non-constant method can be called from different threads on different class instances.
+•	The same cv::Mat can be used in different threads due to atomic reference-counting operations.
+Setting up OpenCV on Android
+Step 1: Download and Extract SDK
+•	Download OpenCV Android SDK 4.9 from the GitHub repository.
+•	Extract the SDK to a convenient location.
+Step 2: Import Module into Android Studio
+•	Navigate to File -> New -> Import Module.
+•	Browse to the extracted SDK, select the "sdk" folder, name the module, and click Finish.
+•	If you encounter Gradle build errors: 
+o	Switch to the Build log pane.
+o	Click the Build file (.../opencv/build.gradle) and make necessary corrections (check the screenshot in the source for guidance).
+o	Click the sync button for Gradle to synchronize the project.
+Step 3: Add Dependency
+•	Open your app-level build.gradle file.
+•	Add implementation project(':opencv') inside the "dependencies" block.
+•	Click Sync Now to sync the project with Gradle.
+Step 4: Load the Library
+•	Load the OpenCV library to call its methods from your app.
+•	Below is a sample code snippet to load OpenCV and resize an image:
+package com.ranju.myapplication;
+import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.util.Log;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import java.io.File;
+public class MainActivity extends AppCompatActivity {
+ // Replace with the actual path to your image file
+ private static final String IMAGE_FILE_PATH = "/path/to/your/image.jpg";
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  setContentView(R.layout.activity_main);
+  if (OpenCVLoader.initLocal()) {
+   Log.i("OpenCV", "OpenCV successfully loaded.");
+  }
+  // An example: Resize an image using OpenCV
+  Bitmap bitmap = BitmapFactory.decodeFile(IMAGE_FILE_PATH); // load the image
+  if (bitmap != null) {
+   Bitmap resizedBitmap = getResizedBitmapCV(bitmap, 400, 600); // image resized using OpenCV
+   // Other code goes here ...
+  }
+ }
+ private Bitmap getResizedBitmapCV(Bitmap inputBitmap, int newWidth, int newHeight) {
+  // Convert the input Bitmap to a Mat
+  Mat inputMat = new Mat();
+  Utils.bitmapToMat(inputBitmap, inputMat);
+  // Create a new Mat for the resized image
+  Mat resizedMat = new Mat();
+  Imgproc.resize(inputMat, resizedMat, new Size(newWidth, newHeight));
+  // Convert the resized Mat back to a Bitmap
+  Bitmap resizedBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+  Utils.matToBitmap(resizedMat, resizedBitmap);
+  inputMat.release();
+  resizedMat.release();
+  return resizedBitmap;
+ }
+}
+Your Android project now has OpenCV integrated! You can call OpenCV methods from your application.
+Additional Resources
+The sources provide a wealth of further reading on various OpenCV topics. You can explore the documentation and tutorials provided in for detailed explanations and examples of each OpenCV module.
+
