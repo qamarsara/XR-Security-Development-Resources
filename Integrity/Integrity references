@@ -1,0 +1,119 @@
+Decentraland SDK Guide
+•	The Decentraland SDK is a tool that allows the creation and enhancement of scenes through code written in TypeScript (JavaScript + Types).
+•	For those who prefer no-code tools, the Scene Editor is an alternative for creating scenes.
+Installing the Creator Hub
+1.	The Creator Hub is necessary for building, previewing, and deploying Decentraland scenes. Download it from the provided link.
+2.	Install Visual Studio Code to edit the scene's code.
+3.	Refer to the Installation guide for further details about installing the Creator Hub.
+Creating the First Scene
+1.	Open the Creator Hub and navigate to the Scenes tab. Click Create Scene.
+2.	Choose the Empty Scene starting template.
+3.	Wait for the folder to be populated with the default files for a basic scene.
+4.	The scene will appear as an empty grid.
+Adding Items from Asset Packs
+•	Explore the Asset Packs at the bottom of the Scene Editor, select items, and position them within the scene.
+•	To place an item, click and drag it from the asset pack menu onto the desired location in the scene canvas.
+•	Reposition already placed items by clicking and dragging them.
+•	Ground items, marked with a paint bucket icon, can cover the entire scene's ground with copies of the item.
+Running a Preview
+1.	Click the Preview button in the top menu to load the scene within Decentraland.
+2.	Explore the scene as a Decentraland avatar.
+3.	Keep the preview window open while working on the scene to see live updates with every change made in the Scene Editor.
+4.	For more details about scene preview, refer to the "preview a scene" section.
+Adding Custom 3D Assets
+1.	Download the provided 3D avocado model in .glb format and unzip it.
+2.	Click the plus sign in the top-right corner of the Asset Packs section in the Scene Editor UI.
+3.	Drag the avocado.glb file onto the designated area in the Scene Editor UI and click Import.
+4.	The avocado.glb model will appear in the Local Assets tab, inside the Scene folder. Drag it onto the scene like any other item from the Asset Packs.
+Editing the Scene Code
+1.	Click the <> Code button in the top menu to open the scene project in Visual Studio Code.
+2.	Visual Studio Code must be installed.
+3.	A separate window with Visual Studio Code will open, displaying the project's file and folder structure on the left margin.
+4.	Open the index.ts file located in the src folder.
+5.	The file contains import statements, which fetch references from other files, and the main() function, the scene's entry point.
+6.	Code written outside the main() function will not be executed.
+7.	Replace the contents of index.ts with the provided code snippet to create a new avocado entity and position it in the scene.
+8.	The preview will display two avocados: one added via the Scene Editor and the other via code.
+9.	The added code creates a new entity, applies a shape based on the downloaded 3D model, and sets its position and scale using the Transform component.
+10.	The Scene Editor's UI will display the same information for the Transform and GLTF components as the code written.
+Adding Interactivity
+1.	Add a pointer event handler to the avocado entity at the end of the main() function.
+2.	Visual Studio Code provides syntax error highlighting, autocompletion, and smart suggestions. Click on an object to see its full class definition.
+3.	Utilize Visual Studio Code's suggestions to fix syntax errors and add necessary imports.
+4.	The pointerEventsSystem.onPointerDown() statement defines the entity for pointer events, additional parameters in an opts object (button and hover text), and a function to execute on entity click.
+5.	In this case, the function logs text to the console.
+6.	The opts section sets the button field for the pointer button and the hoverText parameter for custom text display.
+7.	Players will see the text "collect" when hovering over the avocado, indicating the click action.
+8.	To view the message logged by the click event, open the scene preview and press the ` key to toggle the console display.
+9.	Each click on the code-added avocado will log a message to the console.
+10.	For an entity to be clickable, it must have a collider geometry, which the provided model already includes.
+11.	Replace the engine.removeEntity(avocado2) line with engine.removeEntity(avocado2) to make the avocado vanish on click.
+12.	Clicking the avocado will now remove it from the scene.
+Using Tweens
+•	Tweens are gradual transitions of position, rotation, or scale over time.
+•	Add the provided code snippet to the main() function to create a scale tween for the avocado.
+•	Use Visual Studio Code's suggestions to fix syntax errors and add necessary imports.
+•	The Tween component will move the avocado from coordinates 3, 0, 3 to 8, 0, 8 over 5 seconds (5000 milliseconds) using a linear easing function for smooth, constant change.
+•	A Tween component requires the entity to work on, start and end positions, duration in milliseconds, and easing function.
+•	Experiment with the easingFunction parameter for different effects.
+•	The EF_EASEINBOUNCE easing function creates an ease-in bounce interpolation, starting with a bouncy effect and transitioning from slow to fast.
+•	The Tween component can also scale or rotate an entity over time.
+Using Your Own Functions
+1.	Create a separate function to add a scale tween for the avocado's vanishing effect.
+2.	Place the provided code snippet outside the main() function to define the collect() function.
+3.	The collect() function takes an entity as a parameter (myEntity) and applies a scale Tween to it.
+4.	Encapsulating reusable code within functions promotes code organization and maintainability.
+5.	The tween affects the avocado's scale, shrinking it from size one to zero over half a second (500 milliseconds) using the EASEINBOUNCE easing function for a bouncy effect.
+6.	Tween.createOrReplace() ensures that any existing tweens on the entity are replaced.
+7.	Modify the pointer events function to call the collect() function with the avocado entity reference instead of removing it directly.
+8.	The avocado will now vanish with a jumpy movement when clicked.
+9.	Ideally, delete the entity after the tween completes for optimal scene performance.
+Item from the Scene Editor
+1.	Use the engine.getEntityOrNullByName() function to fetch items added visually in the Scene Editor by their name as displayed in the entity tree.
+2.	Ensure the entity name used in the code matches the entity tree exactly.
+3.	The provided code snippet demonstrates fetching an entity named "Yellow Crate" and verifying its existence using if (crate) to avoid null references.
+4.	Entities added via the Scene Editor are loaded into the scene before the main() function's code is called.
+5.	Add a pointer behavior to the "Yellow Crate" entity similar to the avocado, calling the previously defined collect() function.
+6.	Defining functions separately allows for reusability with a single line of code.
+7.	Smart Items can also be fetched from the scene and manipulated via code.
+More Tutorials and Resources
+•	The coding-scenes section provides a high-level understanding of Decentraland scene functionality.
+•	The Examples page contains various small scenes built with SDK7.
+•	Use the Scene from example feature to copy specific projects without downloading the entire repository.
+•	The Development guide section offers further instructions on adding content to scenes.
+Engaging with Other Developers
+•	Join the Decentraland Discord and the Decentraland DAO Discord for discussions and community support.
+•	Consult the Troubleshooting and debug sections in the documentation for issue resolution.
+•	Post issues to the SDK Support category on the Decentraland Forum.
+•	Utilize Stack Overflow with the tags "decentraland" or "decentraland-ecs" for technical assistance.
+•	Seek help in the #sdk, #builder-and-3d, and #code-contribution channels on the Decentraland Discord for code-related, 3D model and art, and code contribution questions, respectively.
+•	The sdk-support channel on the Decentraland DAO Discord provides additional support.
+3D Art Assets
+•	Creating high-quality 3D art is essential for an immersive experience.
+•	The 3D Modeling section of the documentation provides guidance for creating 3D models.
+•	Utilize third-party sources for 3D models if you prefer to focus on coding or game design.
+Recommended 3D Model Sources:
+•	Asset Ovi
+•	SketchFab
+•	Clara.io
+•	Archive3D
+•	SketchUp 3D Warehouse
+•	Thingiverse (adaptable for virtual worlds)
+•	ShareCG
+•	CGTrader
+Generative AI Tools for 3D Model Generation:
+•	Meshy
+•	Luma AI
+•	TRipo3D
+Note: Ensure that downloaded models are in the supported .gltf or .glb formats and adhere to scene limitations regarding triangle count, textures, and materials. Pay attention to license restrictions.
+Publishing the Scene
+•	Upload the scene to Decentraland if you own LAND, a Decentraland NAME, an ETH ENS name, or have permissions from someone who does.
+•	Refer to the "publishing" section for detailed instructions.
+Other Useful Information
+•	Libraries
+•	Design constraints for games
+•	3D modeling
+•	Scene limitations
+Please note that the information provided in this guide is based on the given sources. As Decentraland is a constantly evolving platform, it is recommended to refer to the official documentation for the most up-to-date information.
+
+
