@@ -1,0 +1,51 @@
+Somnium Space Unity SDK Documentation
+Introduction
+Somnium Space Unity SDK documentation! This guide provides a comprehensive overview of the tools and resources available for creating immersive experiences within the Somnium Space metaverse. The Somnium Space Unity SDK allows developers to create and upload their own 3D avatars and items, and owners of Somnium WORLD NFTs can design entire immersive experiences and place portals to those parcels in Somnium Space.
+Requirements
+Somnium WORLD NFT
+To create a Somnium WORLD, you will need to own a Somnium WORLD NFT. You can check the Somnium Space VR marketplace on OpenSea or keep an eye out for WORLDs for sale on the secondary market.
+Somnium Space Launcher
+You will need to install the Somnium Space launcher and create an account. You can download the launcher from the Somnium Space website and connect it to your Metamask wallet using the same address that holds your WORLD NFT.
+Unity and Somnium Space Unity SDK
+You will need to install Unity and the Somnium Space Unity SDK, which can be found on the Somnium Space website.
+Getting Started
+1.	Install the Somnium Space Unity SDK: Follow chapters 1 and 2 of the documentation to install the SDK. You can skip chapter 3, which covers importing an avatar, unless you are also interested in creating avatars.
+2.	Install Unity Bolt: Bolt is a free visual scripting plugin for Unity that allows you to add game logic without writing code. You can install Bolt from the Unity Asset Store.
+3.	Create a new Unity project: Configure the project settings according to the instructions in the Somnium Space Unity SDK documentation.
+4.	Import the Somnium Space Unity SDK package: Import the SDK package into your Unity project.
+5.	Start building your WORLD: Use the Unity editor and Bolt visual scripting to design and build your immersive experience.
+6.	Upload your WORLD: Follow the instructions in the Somnium Space Unity SDK documentation to upload your completed WORLD to Somnium Space.
+Unity Bolt
+Unity Bolt is a visual scripting tool that allows you to create interactive experiences without writing code. While you're not writing code directly, some programming knowledge will be helpful when using Bolt.
+Key Features
+•	Visual Scripting: Create game logic using a drag-and-drop interface.
+•	Flow Machines: Organize your scripts into modular flow machines.
+•	Events and Actions: Trigger actions and events based on player interactions and game state changes.
+•	Variables and Data Types: Define variables to store data and manipulate it within your scripts.
+Full-Scale Scripting
+Somnium Space V3.0 introduces full-scale scripting using the Somnium Space Unity SDK. This will allow developers to create even more complex and interactive experiences, with the ability to utilize existing Unity games and port them to Somnium Space. Full-scale scripting will be self-restoring and self-managed, enabling code to unpack and find references independently.
+Note: Scripts may not be readily available on iOS devices at launch due to compatibility issues with AOT compilers.
+User-Created Apps
+With Somnium Space 3.0, users can create their own apps for the VR tablet using Bolt visual scripting. The SDK provides an app template and allows users to construct and integrate their own Bolt modules.
+Monetization
+Creators can monetize their WORLDs and digital assets through the Somnium Space marketplace. The marketplace allows users to mint items, place them for sale or auction, and create collections. It also includes a Creators Royalties system, where creators can receive a 5% royalty on each resale of their items.
+AI Integration
+Somnium Space V3.0 includes new AI and data systems that empower users to integrate AI models into their VR experiences. The Experience Data Format (EDF) allows for the recording and sharing of data from VR experiences, including:
+•	Full-body motion
+•	Finger tracking
+•	Eye and face tracking
+•	Speech
+•	Hearing
+•	Vision
+•	Avatar and animation data
+•	Basic physiological data
+All data gathered is stored locally on the user's PC and is not collected or stored on Somnium Space servers. Users can choose to share or trade their data with researchers directly through the platform.
+Resources
+•	Somnium Space Unity SDK Documentation: Download the latest documentation from the Somnium Space website.
+•	Unity Bolt Documentation: Access the official Unity Bolt documentation for detailed information on visual scripting.
+•	Somnium Space Forum: Engage with the Somnium Space community and ask questions on the forum.
+•	Somnium Times: Read articles and tutorials on the Somnium Times website for insights and inspiration.
+Conclusion
+The Somnium Space Unity SDK is a powerful tool that enables anyone to create and share immersive experiences within the Somnium Space metaverse. Whether you are a seasoned developer or just starting out, we encourage you to explore the possibilities and unleash your creativity. Happy building!
+
+
