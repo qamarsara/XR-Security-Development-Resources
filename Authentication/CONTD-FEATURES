@@ -1,0 +1,42 @@
+FaceTec SDK Documentation
+The FaceTec SDK is a software development kit that provides server-side biometrics for face authentication. This means that the biometric authentication process is independent of the device and offers cross-device compatibility and centralized management. The FaceTec SDK is available for Android and iOS.
+Features
+•	3D Liveness Check: This feature determines whether the user presenting their face is a real person and not a spoof.
+•	3D Face Matching: This feature compares the user's 3D face scan with a previously enrolled template to verify their identity.
+•	Account Recovery: Face authentication can be used for account recoveries.
+•	Fraud Prevention: Face authentication can be used to prevent fraud during onboarding.
+How Face Authentication Works
+•	Activation: Face authentication needs to be activated for each user before they can use it. This can be done using a PIN code and/or other biometrics.
+•	Authentication: To authenticate a user, the process must be started using the REST API.
+•	Add or Update: To add or update a user's face authentication credentials, the process is initiated through the SDK.
+Integration and Configuration
+•	SDK Integration: The FaceTec SDKs need to be incorporated into the mobile application. 
+o	The SDK can be downloaded from a gated repository, requiring login credentials.
+o	The SDK framework needs to be set to "Embed & Sign" in the project settings.
+o	A "Privacy - Camera Usage Description" entry must be added to the Info.plist file.
+•	Application Configuration: The application needs to be configured to use FaceTec. Details for configuring the application can be found in the Signicat documentation.
+Implementation Flow
+Implementing Face authentication typically involves these steps:
+1.	Initiate Authentication: Start the process for "Add or update" or "Authentication". The SDK or API will return a serverSideFaceInit object.
+2.	Initialize FaceTec SDK: Use the authorizations from the serverSideFaceInit object to initialize the FaceTec SDK on the client device.
+3.	Perform Face Scan: The user performs the FaceScan, which returns a sessionResult.
+4.	Process Results: Provide the FaceScanData object containing the sessionResult to the SDK or API.
+5.	Finish Authentication: Complete the "Add or update" or "Authentication" process based on the results.
+Server-Side Interaction
+FaceTec SDK uses server-side components for core functions such as:
+•	Liveness Check: The server performs the actual verification of liveness based on the data submitted by the client.
+•	Enrollment: The server securely stores the enrolled face data.
+•	Matching: The server compares face scans for authentication.
+Error Handling
+Errors during the face scan process are propagated through the FaceTec delegate. The processSessionWhileFaceTecSDKWaits function provides the sessionResult containing the status of the session.
+Customization
+•	Branding and Styling: The FaceTec SDK allows customization of various elements like interface, colors, fonts, and borders.
+•	Environmental Conditions: Different configurations can be set for scenarios like low-light or bright-light situations.
+Localization
+The FaceTecSDK supports several languages.
+Flutter Plugin
+A Flutter plugin is available for integrating FaceTec into Flutter applications. This plugin provides:
+•	Functions for enrollment, authentication, ID scanning, and more.
+•	Customization options.
+Note: The information provided above is based on the given sources. The FaceTec SDK might offer additional features and functionalities not covered in these sources.
+
