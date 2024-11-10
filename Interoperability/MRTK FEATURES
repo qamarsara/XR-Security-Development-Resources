@@ -1,0 +1,47 @@
+Mixed Reality Extension SDK
+The Mixed Reality Extension SDK enables developers to build 3D world extensions for AltspaceVR using Node.js. The SDK utilizes a client-server model, with logic running on the server and the client handling CPU-intensive tasks such as animation, physics, and input handling.
+Key Features:
+•	Scene graph modification using glTF assets, primitives, and host app assets.
+•	Actor creation with 3D meshes, lights, and text objects.
+•	Animation, sound, music, and texture manipulation.
+•	Rigid body physics and collision handling.
+•	User filtering and single-user actors.
+•	Click detection behaviors and event handlers.
+•	Avatar attachment and interaction capabilities.
+Current State:
+The Mixed Reality Extension SDK is currently in developer preview. While the API surface is relatively stable, internal refactoring may lead to occasional breaking changes before the 1.0 release.
+Limitations:
+•	Limited API features, focusing primarily on networking and synchronization.
+•	Jittery rigid body physics synchronization.
+•	Unreliable user collision with rigid body objects.
+•	Challenges in debugging due to missing client-side error reporting.
+Future Goals:
+•	Adding features like rigid body constraints, input latency improvements, and 2D UI systems.
+•	Prioritizing reliability, predictability, and ease of use.
+Mixed Reality Toolkit 3 (MRTK3)
+MRTK3 is the third generation of the Microsoft Mixed Reality Toolkit for Unity, built upon Unity's XR Management system and XR Interaction Toolkit. It is designed to accelerate cross-platform mixed-reality development and offers features such as:
+•	Cross-platform input system and spatial interaction building blocks.
+•	Rapid prototyping with in-editor simulation.
+•	Extensible framework for core component customization.
+•	Wide platform support, including HoloLens 2, Meta Quest, Windows Mixed Reality, and more.
+Key Improvements:
+•	Architecture: Based on Unity XR Interaction Toolkit, OpenXR focused, and flexible interaction paradigms.
+•	Performance: Redesigned for maximum performance with zero per-frame memory allocation.
+•	User Interface: New interaction models, updated Mixed Reality Design Language, and unified 2D & 3D input.
+•	Accessibility: Early preview features include low vision aids and input assistance.
+•	Long Term Support: Minimum requirements include OpenXR, Unity LTS versions, and Unity's XR Interaction Toolkit.
+Versioning:
+MRTK3 uses individual versioning for each package, following the Semantic Versioning 2.0.0 specification. This allows for faster servicing and improved developer understanding of changes.
+Mixed Reality Feature Tool
+The Mixed Reality Feature Tool is a Unity-specific tool that simplifies the process of discovering, updating, and adding Mixed Reality feature packages to projects. It allows developers to search packages, view dependencies, and preview manifest file changes before importing.
+Key Features:
+•	Package discovery and acquisition based on categories and dependencies.
+•	Project validation to ensure successful feature import.
+•	Manifest file review and approval for project modifications.
+Additional Resources
+The sources also mention other mixed-reality development tools and services, including:
+•	Azure Spatial Anchors: Enables real-world scale experiences.
+•	Azure Object Anchors: Keeps 3D content aligned with physical objects.
+•	Azure Remote Rendering: Offloads complex model rendering to the cloud.
+•	Microsoft Mesh: Facilitates collaborative mixed-reality experiences.
+Please note that the information provided above is a summary of the provided sources and may not be exhaustive. For detailed documentation and the most up-to-date information, refer to the official Microsoft Mixed Reality documentation and resources.
